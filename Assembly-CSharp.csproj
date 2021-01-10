@@ -63,7 +63,7 @@
      <Compile Include="Assets\Views\Board.cs" />
      <Compile Include="Assets\Views\LoginView.cs" />
      <Compile Include="Assets\Views\MainView.cs" />
-     <Compile Include="Assets\Views\SettingsView.cs" />
+     <Compile Include="Assets\Views\MenuView.cs" />
      <Compile Include="Assets\Views\SignupView.cs" />
      <Compile Include="Assets\Views\Tile.cs" />
      <Compile Include="Assets\Views\View.cs" />

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsView : View {
+public class MenuView : View {
     public Button logoutButton;
 }
