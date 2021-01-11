@@ -1,57 +1,65 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class LootKingdomMobile : MonoBehaviour {
     [SerializeField] private GameObject backgroundContainer;
+
     private LoginView loginView;
-    private SignupView signupView;
     private MainView mainView;
-    private SettingsView settingsView;
+    private MenuView menuView;
+
+    private enum Menu {
+        Closed = 0,
+        Open = -100
+    }
+
+    private bool _menuOpen;
+    private bool menuOpen {
+        get => _menuOpen;
+        set {
+            _menuOpen = value;
+            var pos = mainView.menuButton.transform.position;
+            if (value) { mainView.menuButton.GetComponent<RectTransform>().DOAnchorPosX((int)Menu.Open, 0.3f); }
+            else { mainView.menuButton.GetComponent<RectTransform>().DOAnchorPosX((int)Menu.Closed, 0.3f); }
+        }
+    }
 
 
     void Awake() {
         loginView = Factory.Instance.CreateView<LoginView>();
-        signupView = Factory.Instance.CreateView<SignupView>();
         mainView = Factory.Instance.CreateView<MainView>();
-        settingsView = Factory.Instance.CreateView<SettingsView>();
-        
+        menuView = Factory.Instance.CreateView<MenuView>();
+
+        mainView.transform.SetParent(gameObject.transform, false);        
         loginView.transform.SetParent(gameObject.transform, false);
 
-
-
         loginView.loginButton.onClick.AddListener(() => {
-            mainView.transform.SetParent(gameObject.transform, false);
-            OpenView(mainView);
-        });
-
-        loginView.signupButton.onClick.AddListener(() => {
-            signupView.transform.SetParent(gameObject.transform, false);
-            OpenView(signupView);
-        });
-
-        signupView.signupButton.onClick.AddListener(() => {
-            OpenView(loginView);
-        });
-
-        signupView.loginButton.onClick.AddListener(() => {
-            OpenView(loginView);
+            ShowView(mainView);
         });
 
         mainView.menuButton.onClick.AddListener(() => {
-            settingsView.transform.SetParent(gameObject.transform, false);
-            OpenView(settingsView);
+            menuOpen = !menuOpen;
+            // menuView.transform.SetParent(gameObject.transform, false);
+            // ShowView(menuView);
         });
 
-        settingsView.logoutButton.onClick.AddListener(() => {
-            OpenView(loginView);
+        mainView.profileButton.onClick.AddListener(() => {
+            var inventoryView = Factory.Instance.CreateView<InventoryView>();
+            inventoryView.transform.SetParent(gameObject.transform, false);
+            ShowView(inventoryView);
+        });
+
+        menuView.logoutButton.onClick.AddListener(() => {
+            ShowView(loginView);
+        });
+
+        menuView.closeButton.onClick.AddListener(() => {
+            ShowView(mainView);
         });
     }
 
-    private void OpenView(View view) {
+    private void ShowView(View view) {
         loginView.gameObject.SetActive(false);
-        mainView.gameObject.SetActive(false);
-        signupView.gameObject.SetActive(false);
-        settingsView.gameObject.SetActive(false);
-
         view.gameObject.SetActive(true);
     }
 }

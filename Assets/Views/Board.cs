@@ -4,4 +4,6 @@ using UnityEngine;
 public class Board : View {
     public GameObject board;
     public List<Tile> tiles;
+    public Transform boardTransform;
+    public Transform planeTransform;
 }

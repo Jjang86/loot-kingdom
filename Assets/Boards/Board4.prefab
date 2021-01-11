@@ -209,6 +209,8 @@ MonoBehaviour:
   - {fileID: 399241128707276888}
   - {fileID: 399241126777054864}
   - {fileID: 399241126959928740}
+  boardTransform: {fileID: 7521846208916077937}
+  planeTransform: {fileID: 7521846207998656368}
 --- !u!1001 &7521846207991377579
 PrefabInstance:
   m_ObjectHideFlags: 0
