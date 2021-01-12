@@ -21,5 +21,6 @@ MonoBehaviour:
   - {fileID: -8730421098435355188, guid: 887cb75bdae6f49a99908e73d61efe7e, type: 3}
   - {fileID: -1802735848094234551, guid: 4dcf02f0e22f14503b9fc59d22fb9944, type: 3}
   - {fileID: -6125006359233653117, guid: 55f4c5924761b4db3b99774287f483dd, type: 3}
+  - {fileID: 5339573660678127954, guid: d5641c2b7bd7c434ebd87997d128ae23, type: 3}
   boardScriptableObject: {fileID: 11400000, guid: 5393316efe5364978b90d4c18c21c90a,
     type: 2}

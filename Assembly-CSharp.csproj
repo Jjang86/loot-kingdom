@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Boards\Board4.cs" />
-     <Compile Include="Assets\Boards\Board5.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs" />
@@ -75,6 +74,7 @@
      <Compile Include="Assets\Views\LoginView.cs" />
      <Compile Include="Assets\Views\MainView.cs" />
      <Compile Include="Assets\Views\MenuView.cs" />
+     <Compile Include="Assets\Views\PlayerPieceView.cs" />
      <Compile Include="Assets\Views\SignupView.cs" />
      <Compile Include="Assets\Views\Tile.cs" />
      <Compile Include="Assets\Views\View.cs" />
