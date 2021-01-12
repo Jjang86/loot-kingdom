@@ -2,8 +2,8 @@
 using UnityEngine.UI;
 
 public class SignupView : View {
-    public Button signupButton;
-    public Button loginButton;
+    [SerializeField] private Button signupButton;
+    [SerializeField] private Button loginButton;
 
     void Awake() {
         signupButton.onClick.AddListener(() => {

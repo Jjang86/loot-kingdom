@@ -18,7 +18,6 @@ public class LootKingdomMobile : MonoBehaviour {
         loginView.signupButton.onClick.AddListener(() => {
             var signupView = Factory.Instance.CreateView<SignupView>();
             signupView.transform.SetParent(gameObject.transform, false);
-            Destroy(loginView.gameObject);
         });
     }
 }
