@@ -44,12 +44,7 @@ public class MainView : View {
     }
 
     private void SetPlayerPiece() {
-        try {
-            playerPiece.transform.position = boardView.tiles[currentPosition-1].transform.position;
-        }
-        catch {
-            Debug.Log(currentPosition-1);
-        }
+        playerPiece.transform.position = boardView.tiles[currentPosition-1].transform.position;
     }
 
     private void Start() {
@@ -76,7 +71,6 @@ public class MainView : View {
         diceButton.onClick.AddListener(() => {
             var diceRoll = RandomNumber();
             var newPosition = GetNewCurrentPosition(diceRoll);
-            Debug.Log(currentPosition);
             SetPlayerPiece();
         });
     }
