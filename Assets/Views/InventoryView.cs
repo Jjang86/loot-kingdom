@@ -10,6 +10,9 @@ public class InventoryView : View {
     [SerializeField] private Button craftingButton;
     [SerializeField] private Button defenceButton;
     [SerializeField] private Button tileUpgradesButton;
+    [SerializeField] private Transform xTransform;
+    [SerializeField] private Transform yTransform;
+
 
     private EquipmentView equipmentView;
     private CraftingView craftingView;
@@ -65,9 +68,9 @@ public class InventoryView : View {
         // TODO: Data drive board based on user's level
         boardView = Factory.Instance.CreateView<Board4>();
         boardView.transform.SetParent(upperSectionContainer.transform, false);
-        boardView.yTransform.rotation = Quaternion.Euler(-90.0f, 0.0f, 0.0f);
-        boardView.xTransform.rotation = Quaternion.identity;
-        boardView.xTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        // boardView.yTransform.rotation = Quaternion.Euler(-90.0f, 0.0f, 0.0f);
+        // boardView.xTransform.rotation = Quaternion.identity;
+        // boardView.xTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
         itemListView = Factory.Instance.CreateView<ItemListView>();
         itemListView.transform.SetParent(lowerSection.transform, false);

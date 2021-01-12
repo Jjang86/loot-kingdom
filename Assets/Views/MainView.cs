@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class MainView : View {
     [SerializeField] private Button profileButton;
     [SerializeField] private Button logoutButton;
     [SerializeField] private Button diceButton;
+    [SerializeField] private Transform xTransform;
+    [SerializeField] private Transform yTransform;
 
     private PlayerPieceView playerPiece;
     private Board boardView;
@@ -31,13 +34,22 @@ public class MainView : View {
     }
 
     private int RandomNumber() {
-        return Random.Range(1, 12);
+        return UnityEngine.Random.Range(1, 12);
     }
 
     private int GetNewCurrentPosition(int diceRoll) {
-        currentPosition = (currentPosition + diceRoll) % boardView.tiles.Count;
-        if (currentPosition > boardView.tiles.Count) { currentPosition = (currentPosition % boardView.tiles.Count) + 1; }
+        currentPosition = currentPosition + diceRoll;
+        if (currentPosition > boardView.tiles.Count) { currentPosition = currentPosition % boardView.tiles.Count; }
         return currentPosition;
+    }
+
+    private void SetPlayerPiece() {
+        try {
+            playerPiece.transform.position = boardView.tiles[currentPosition-1].transform.position;
+        }
+        catch {
+            Debug.Log(currentPosition-1);
+        }
     }
 
     private void Start() {
@@ -45,8 +57,7 @@ public class MainView : View {
         playerPiece.transform.SetParent(board.transform, false);
         boardView = Factory.Instance.CreateView<Board4>();
         boardView.transform.SetParent(board.transform, false);
-        playerPiece.transform.position = boardView.tiles[currentPosition-1].transform.position;
-        // Debug.Log(boardView.tiles[currentPosition-1].transform.position);
+        SetPlayerPiece();
 
         menuButton.onClick.AddListener(() => {
             menuOpen = !menuOpen;
@@ -65,6 +76,8 @@ public class MainView : View {
         diceButton.onClick.AddListener(() => {
             var diceRoll = RandomNumber();
             var newPosition = GetNewCurrentPosition(diceRoll);
+            Debug.Log(currentPosition);
+            SetPlayerPiece();
         });
     }
 }
