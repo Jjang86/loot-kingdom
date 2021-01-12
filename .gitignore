@@ -4,7 +4,7 @@ SkyGridEOS/out/*
 Assets/StreamingAssets/SkyGridEOS
 .liquidcore
 
-/[Ll]ibrary/
+[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
 /iOS-build/
