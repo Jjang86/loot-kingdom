@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainView : View {
-    [SerializeField] private GameObject board;
     [SerializeField] private RectTransform menuRect;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button profileButton;
@@ -49,9 +48,9 @@ public class MainView : View {
 
     private void Start() {
         playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
-        playerPiece.transform.SetParent(board.transform, false);
+        LootKingdomBoard.Instance.AddPiece(playerPiece);
         boardView = Factory.Instance.CreateView<Board4>();
-        boardView.transform.SetParent(board.transform, false);
+        LootKingdomBoard.Instance.SetBoard(boardView);
         SetPlayerPiece();
 
         menuButton.onClick.AddListener(() => {
