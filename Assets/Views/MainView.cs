@@ -14,7 +14,10 @@ public class MainView : View {
 
     private PlayerPieceView playerPiece;
     private Board boardView;
-    private int currentPosition = 1;
+    private int targetTile = 1;
+    private Vector3 velocity;
+    private float smoothTime = 0.20f;
+    private bool tileAnimating = false;
 
     private enum Menu {
         Closed = 100,
@@ -36,14 +39,24 @@ public class MainView : View {
         return UnityEngine.Random.Range(1, 12);
     }
 
-    private int GetNewCurrentPosition(int diceRoll) {
-        currentPosition = currentPosition + diceRoll;
-        if (currentPosition > boardView.tiles.Count) { currentPosition = currentPosition % boardView.tiles.Count; }
-        return currentPosition;
+    private void SetTargetTile(int diceRoll) {
+        targetTile = targetTile + diceRoll;
+        if (targetTile > boardView.tiles.Count) { targetTile = targetTile % boardView.tiles.Count; }
     }
 
-    private void SetPlayerPiece() {
-        playerPiece.transform.position = boardView.tiles[currentPosition-1].transform.position;
+    private void MovePlayerPiece(bool animate) {
+        if (animate) { 
+            tileAnimating = true;
+            playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[targetTile-1].transform.position, ref velocity, smoothTime);
+        }
+        else {
+            playerPiece.transform.position = boardView.tiles[targetTile-1].transform.position;
+        }
+    }
+
+    private void SetTargetPosition(Vector3 pos) {
+        boardView.tiles[targetTile-1].transform.position = pos;
+        velocity = Vector3.zero;
     }
 
     private void Start() {
@@ -51,7 +64,7 @@ public class MainView : View {
         LootKingdomBoard.Instance.AddPiece(playerPiece);
         boardView = Factory.Instance.CreateView<Board4>();
         LootKingdomBoard.Instance.SetBoard(boardView);
-        SetPlayerPiece();
+        MovePlayerPiece(false);
 
         menuButton.onClick.AddListener(() => {
             menuOpen = !menuOpen;
@@ -69,8 +82,15 @@ public class MainView : View {
 
         diceButton.onClick.AddListener(() => {
             var diceRoll = RandomNumber();
-            var newPosition = GetNewCurrentPosition(diceRoll);
-            SetPlayerPiece();
+            SetTargetTile(diceRoll);
+            SetTargetPosition(boardView.tiles[targetTile-1].transform.position);
         });
+    }
+
+    private void Update() {
+        // Move our position a step closer to the target.
+        if (playerPiece.transform.position != boardView.tiles[targetTile-1].transform.position) {
+            MovePlayerPiece(true);
+        }
     }
 }
