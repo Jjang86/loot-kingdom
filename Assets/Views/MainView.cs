@@ -9,8 +9,6 @@ public class MainView : View {
     [SerializeField] private Button profileButton;
     [SerializeField] private Button logoutButton;
     [SerializeField] private Button diceButton;
-    [SerializeField] private Transform xTransform;
-    [SerializeField] private Transform yTransform;
 
     private PlayerPieceView playerPiece;
     private Board boardView;
@@ -35,7 +33,7 @@ public class MainView : View {
         }
     }
 
-    private int RandomNumber() {
+    private int GetRandomNumber() {
         return UnityEngine.Random.Range(1, 12);
     }
 
@@ -46,7 +44,6 @@ public class MainView : View {
 
     private void MovePlayerPiece(bool animate) {
         if (animate) { 
-            tileAnimating = true;
             playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[targetTile-1].transform.position, ref velocity, smoothTime);
         }
         else {
@@ -57,6 +54,7 @@ public class MainView : View {
     private void SetTargetPosition(Vector3 pos) {
         boardView.tiles[targetTile-1].transform.position = pos;
         velocity = Vector3.zero;
+        tileAnimating = true;
     }
 
     private void Start() {
@@ -81,14 +79,13 @@ public class MainView : View {
         });
 
         diceButton.onClick.AddListener(() => {
-            var diceRoll = RandomNumber();
+            var diceRoll = GetRandomNumber();
             SetTargetTile(diceRoll);
             SetTargetPosition(boardView.tiles[targetTile-1].transform.position);
         });
     }
 
     private void Update() {
-        // Move our position a step closer to the target.
         if (playerPiece.transform.position != boardView.tiles[targetTile-1].transform.position) {
             MovePlayerPiece(true);
         }
