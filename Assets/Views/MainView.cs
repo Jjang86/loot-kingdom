@@ -1,7 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainView : View {
     [SerializeField] private RectTransform menuRect;
@@ -9,12 +11,18 @@ public class MainView : View {
     [SerializeField] private Button profileButton;
     [SerializeField] private Button logoutButton;
     [SerializeField] private Button diceButton;
+    [SerializeField] private TextMeshProUGUI diceRoll;
 
     private PlayerPieceView playerPiece;
     private Board boardView;
-    private int targetTile = 1;
+
+    private int currentTile;
+
+    private Vector3 currentPosition;
+    private Vector3 finalPosition;
+
     private Vector3 velocity;
-    private float smoothTime = 0.20f;
+    private float smoothTime = 0.05f;
     private bool tileAnimating = false;
 
     private enum Menu {
@@ -33,36 +41,13 @@ public class MainView : View {
         }
     }
 
-    private int GetRandomNumber() {
-        return UnityEngine.Random.Range(1, 12);
-    }
-
-    private void SetTargetTile(int diceRoll) {
-        targetTile = targetTile + diceRoll;
-        if (targetTile > boardView.tiles.Count) { targetTile = targetTile % boardView.tiles.Count; }
-    }
-
-    private void MovePlayerPiece(bool animate) {
-        if (animate) { 
-            playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[targetTile-1].transform.position, ref velocity, smoothTime);
-        }
-        else {
-            playerPiece.transform.position = boardView.tiles[targetTile-1].transform.position;
-        }
-    }
-
-    private void SetTargetPosition(Vector3 pos) {
-        boardView.tiles[targetTile-1].transform.position = pos;
-        velocity = Vector3.zero;
-        tileAnimating = true;
-    }
-
     private void Start() {
+        currentTile = 0;
         playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
         LootKingdomBoard.Instance.AddPiece(playerPiece);
         boardView = Factory.Instance.CreateView<Board4>();
         LootKingdomBoard.Instance.SetBoard(boardView);
-        MovePlayerPiece(false);
+        playerPiece.transform.position = boardView.tiles[0].transform.position;
 
         menuButton.onClick.AddListener(() => {
             menuOpen = !menuOpen;
@@ -78,16 +63,35 @@ public class MainView : View {
             loginView.transform.SetParent(gameObject.transform, false);
         });
 
-        diceButton.onClick.AddListener(() => {
-            var diceRoll = GetRandomNumber();
-            SetTargetTile(diceRoll);
-            SetTargetPosition(boardView.tiles[targetTile-1].transform.position);
+        diceButton.onClick.AddListener(async () => {
+            diceButton.interactable = false;
+            var rollAmount = GetDiceRoll();
+            diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
+            for (int i = 0; i < rollAmount; i++) {                
+                await MovePlayerPiece();
+                currentTile++;
+            }
+            diceButton.interactable = true;
         });
     }
 
-    private void Update() {
-        if (playerPiece.transform.position != boardView.tiles[targetTile-1].transform.position) {
-            MovePlayerPiece(true);
+    private int GetDiceRoll() {
+        return UnityEngine.Random.Range(1, NumTiles());
+    }
+
+    private async Task MovePlayerPiece() {
+        await MoveToNextTile();
+    }
+
+    private async Task MoveToNextTile() {
+        var nextTile = (currentTile +1) % NumTiles();
+        while ((Math.Round(playerPiece.transform.position.x, 1) != Math.Round(boardView.tiles[nextTile].transform.position.x, 1)) || (Math.Round(playerPiece.transform.position.z, 1) != Math.Round(boardView.tiles[nextTile].transform.position.z, 1))) {
+            playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[nextTile].transform.position, ref velocity, smoothTime);
+            await Task.Yield();
         }
+    }
+
+    private int NumTiles() {
+        return boardView.tiles.Count;
     }
 }
