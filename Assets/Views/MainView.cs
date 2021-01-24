@@ -27,9 +27,9 @@ public class MainView : View {
     private float smoothTime = 0.05f;
     private float timeRemaining = TIME_TO_GET_DICE_ROLL;
     private bool timerIsRunning = false;
-
     private bool tileAnimating = false;
     private int currentTile;
+
     private int _numRolls = 10;
     private int numRolls {
         get => _numRolls;
@@ -82,7 +82,6 @@ public class MainView : View {
 
         diceButton.onClick.AddListener(async () => {
             tileAnimating = true;
-            Debug.Log("Pressed");
             numRolls--;
             diceButton.interactable = false;
             var rollAmount = GetDiceRoll();
