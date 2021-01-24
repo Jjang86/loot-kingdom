@@ -12,29 +12,42 @@ public class MainView : View {
     [SerializeField] private Button logoutButton;
     [SerializeField] private Button diceButton;
     [SerializeField] private TextMeshProUGUI diceRoll;
+    [SerializeField] private TextMeshProUGUI gold;
+    [SerializeField] private TextMeshProUGUI diamonds;
+    [SerializeField] private TextMeshProUGUI rolls;
+    [SerializeField] private TextMeshProUGUI timeText;
+
+    private const float TIME_TO_GET_DICE_ROLL = 5.0f;
 
     private PlayerPieceView playerPiece;
     private Board boardView;
-
-    private int currentTile;
-
     private Vector3 currentPosition;
     private Vector3 finalPosition;
-
     private Vector3 velocity;
     private float smoothTime = 0.05f;
+    private float timeRemaining = TIME_TO_GET_DICE_ROLL;
+    private bool timerIsRunning = false;
+
     private bool tileAnimating = false;
+    private int currentTile;
+    private int _numRolls = 10;
+    private int numRolls {
+        get => _numRolls;
+        set {
+            _numRolls = value;
+            rolls.text = value.ToString();
+        }
+    }
 
     private enum Menu {
         Closed = 100,
         Open = 0
     }
 
-    private bool _menuOpen;
     private bool menuOpen {
-        get => _menuOpen;
+        get => menuOpen;
         set {
-            _menuOpen = value;
+            menuOpen = value;
             var pos = menuButton.transform.position;
             if (value) { menuRect.DOAnchorPosX((int)Menu.Open, 0.3f); }
             else { menuRect.DOAnchorPosX((int)Menu.Closed, 0.3f); }
@@ -43,6 +56,10 @@ public class MainView : View {
 
     private void Start() {
         currentTile = 0;
+        gold.text = "1000";
+        diamonds.text = "50";
+        rolls.text = numRolls.ToString();
+
         playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
         LootKingdomBoard.Instance.AddPiece(playerPiece);
         boardView = Factory.Instance.CreateView<Board4>();
@@ -64,6 +81,9 @@ public class MainView : View {
         });
 
         diceButton.onClick.AddListener(async () => {
+            tileAnimating = true;
+            Debug.Log("Pressed");
+            numRolls--;
             diceButton.interactable = false;
             var rollAmount = GetDiceRoll();
             diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
@@ -71,7 +91,8 @@ public class MainView : View {
                 await MovePlayerPiece();
                 currentTile++;
             }
-            diceButton.interactable = true;
+            if (numRolls > 0) { diceButton.interactable = true; }
+            tileAnimating = false;
         });
     }
 
@@ -93,5 +114,35 @@ public class MainView : View {
 
     private int NumTiles() {
         return boardView.tiles.Count;
+    }
+
+    void Update() {
+        if (numRolls < 10) {
+            timerIsRunning = true;
+            timeText.gameObject.SetActive(true);
+        }
+        else {
+            timerIsRunning = false;
+            timeText.gameObject.SetActive(false);
+        }
+        if (timerIsRunning) {
+            if (timeRemaining > 0) {
+                timeRemaining -= Time.deltaTime;
+                DisplayTime(timeRemaining);
+            }
+            else {
+                numRolls++;
+                timeRemaining = TIME_TO_GET_DICE_ROLL;
+            }
+        }
+
+        if (!tileAnimating && numRolls > 0) { diceButton.interactable = true; }
+    }
+
+    void DisplayTime(float timeToDisplay) {
+        timeToDisplay += 1;
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60); 
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
