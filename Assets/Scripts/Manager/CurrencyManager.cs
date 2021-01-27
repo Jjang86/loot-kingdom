@@ -12,6 +12,4 @@ public static class CurrencyManager {
             NotificationCenter.Notify(Notifications.Currency.numRollsChanged, value);
         }
     }
-
-    public static event Action<int> OnNumRollsAction;
 }

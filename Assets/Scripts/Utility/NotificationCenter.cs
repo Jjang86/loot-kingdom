@@ -8,7 +8,6 @@ public static class NotificationCenter {
     private static Collection<Tuple<object, string, Action>> Subscribers { get; set; }
     private static Collection<Tuple<object, string, Action<object>>> SubscribersWithData { get; set; }
     private static List<Tuple<string, object>> KeepActionData { get; set; }
-    private static bool EnableLogs = true;
 
     static NotificationCenter() {
         Subscribers = new Collection<Tuple<object, string, Action>>();
