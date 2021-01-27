@@ -108,7 +108,6 @@ public class MainView : View {
         var nextTile = (currentTile + 1) % NumTiles();
         while ((Math.Round(playerPiece.transform.position.x, 1) != Math.Round(boardView.tiles[nextTile].transform.position.x, 1)) || (Math.Round(playerPiece.transform.position.z, 1) != Math.Round(boardView.tiles[nextTile].transform.position.z, 1))) {
             playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[nextTile].transform.position, ref velocity, smoothTime);
-            boardView.tiles[nextTile].OnLand();
             await Task.Yield();
         }
     }
