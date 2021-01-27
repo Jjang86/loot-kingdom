@@ -8,7 +8,7 @@ public class Tile : View {
     }
 
     public virtual void OnLand() {
-        CurrencyManager.goldEndAmount = CurrencyManager.goldEndAmount + CurrencyManager.onLandGold;
+        CurrencyManager.Instance.goldEndAmount = CurrencyManager.Instance.goldEndAmount + CurrencyManager.onLandGold;
     }
 
     

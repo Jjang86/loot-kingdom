@@ -1,11 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-public static class CurrencyManager {
+public class CurrencyManager : Singleton<CurrencyManager> {
     public const int onLandGold = 20;
+    private float timer;
+    private float delayAmount = 0.01f;
 
-    private static int _gold = 1000;
-    public static int gold {
+    private int _gold = 1000;
+    public int gold {
         get => _gold;
         set {
             _gold = value;
@@ -13,9 +15,9 @@ public static class CurrencyManager {
         }
     }
 
-    public static int diamonds = 250;
-    private static int _numRolls = 10;
-    public static int numRolls {
+    public int diamonds = 250;
+    private int _numRolls = 10;
+    public int numRolls {
         get => _numRolls;
         set {
             _numRolls = value;
@@ -23,12 +25,26 @@ public static class CurrencyManager {
         }
     }
 
-    private static int _goldEndAmount = gold;
-    public static int goldEndAmount {
+    private int _goldEndAmount;
+    public int goldEndAmount {
         get => _goldEndAmount;
         set {
             _goldEndAmount = value;
-            Debug.Log(value);
         }
+    }
+
+    void Update() {
+        if (gold < goldEndAmount) {
+            timer += Time.deltaTime;
+
+            if (timer >= delayAmount) {
+                timer = 0f;
+                gold++;
+            }
+        }
+    }
+    
+    void Start() {
+        goldEndAmount = gold;
     }
 }

@@ -73,7 +73,7 @@ public class MainView : View {
     private void Update() {
         RunDiceTimer();
 
-        if (!tileAnimating && CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
+        if (!tileAnimating && CurrencyManager.Instance.numRolls > 0) { diceButton.interactable = true; }
     }
 
     private void Start() {
@@ -84,10 +84,10 @@ public class MainView : View {
         
         TableTop.Instance.AddPiece(playerPiece, tiles[currentTile].position);
         TableTop.Instance.SetBoard(boardView);
-        
-        gold.text = CurrencyManager.gold.ToString();
-        diamonds.text = CurrencyManager.diamonds.ToString();
-        rolls.text = CurrencyManager.numRolls.ToString();
+
+        gold.text = CurrencyManager.Instance.gold.ToString();
+        diamonds.text = CurrencyManager.Instance.diamonds.ToString();
+        rolls.text = CurrencyManager.Instance.numRolls.ToString();
 
         menuButton.onClick.AddListener(() => {
             menuOpen = !menuOpen;
@@ -108,7 +108,7 @@ public class MainView : View {
 
     private async void HandleDiceRoll() {
         tileAnimating = true;
-            CurrencyManager.numRolls--;
+            CurrencyManager.Instance.numRolls--;
             diceButton.interactable = false;
             var rollAmount = GetDiceRoll();
             diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
@@ -117,7 +117,7 @@ public class MainView : View {
                 tiles[currentTile].OnLand();
                 currentTile++;
             }
-            if (CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
+            if (CurrencyManager.Instance.numRolls > 0) { diceButton.interactable = true; }
             tileAnimating = false;
     }
 
@@ -138,7 +138,7 @@ public class MainView : View {
     }
 
     private void RunDiceTimer() {
-        if (CurrencyManager.numRolls < 10) {
+        if (CurrencyManager.Instance.numRolls < 10) {
             timerIsRunning = true;
             timeText.gameObject.SetActive(true);
         }
@@ -152,7 +152,7 @@ public class MainView : View {
                 DisplayTime(timeRemaining);
             }
             else {
-                CurrencyManager.numRolls++;
+                CurrencyManager.Instance.numRolls++;
                 timeRemaining = TIME_TO_GET_DICE_ROLL;
             }
         }
