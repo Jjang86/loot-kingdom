@@ -30,16 +30,7 @@ public class MainView : View {
     private bool tileAnimating = false;
     private int currentTile;
 
-    private int _numRolls = 10;
-    private int numRolls {
-        get => _numRolls;
-        set {
-            _numRolls = value;
-            rolls.text = value.ToString();
-        }
-    }
-
-    private enum Menu {
+    private enum MenuPosition {
         Closed = 100,
         Open = 0
     }
@@ -49,16 +40,26 @@ public class MainView : View {
         set {
             menuOpen = value;
             var pos = menuButton.transform.position;
-            if (value) { menuRect.DOAnchorPosX((int)Menu.Open, 0.3f); }
-            else { menuRect.DOAnchorPosX((int)Menu.Closed, 0.3f); }
+            if (value) { menuRect.DOAnchorPosX((int)MenuPosition.Open, 0.3f); }
+            else { menuRect.DOAnchorPosX((int)MenuPosition.Closed, 0.3f); }
         }
+    }
+
+    private void OnEnable() {
+        NotificationCenter.Subscribe(this, Notifications.Currency.numRollsChanged, value => {
+            rolls.text = value.ToString();
+        });
+    }
+
+    private void OnDisable() {
+        NotificationCenter.Unsubscribe(this, Notifications.Currency.numRollsChanged);
     }
 
     private void Start() {
         currentTile = 0;
-        gold.text = "1000";
-        diamonds.text = "50";
-        rolls.text = numRolls.ToString();
+        gold.text = CurrencyManager.gold.ToString();
+        diamonds.text = CurrencyManager.diamonds.ToString();
+        rolls.text = CurrencyManager.numRolls.ToString();
 
         playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
         LootKingdomBoard.Instance.AddPiece(playerPiece);
@@ -82,7 +83,7 @@ public class MainView : View {
 
         diceButton.onClick.AddListener(async () => {
             tileAnimating = true;
-            numRolls--;
+            CurrencyManager.numRolls--;
             diceButton.interactable = false;
             var rollAmount = GetDiceRoll();
             diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
@@ -90,7 +91,7 @@ public class MainView : View {
                 await MovePlayerPiece();
                 currentTile++;
             }
-            if (numRolls > 0) { diceButton.interactable = true; }
+            if (CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
             tileAnimating = false;
         });
     }
@@ -104,9 +105,10 @@ public class MainView : View {
     }
 
     private async Task MoveToNextTile() {
-        var nextTile = (currentTile +1) % NumTiles();
+        var nextTile = (currentTile + 1) % NumTiles();
         while ((Math.Round(playerPiece.transform.position.x, 1) != Math.Round(boardView.tiles[nextTile].transform.position.x, 1)) || (Math.Round(playerPiece.transform.position.z, 1) != Math.Round(boardView.tiles[nextTile].transform.position.z, 1))) {
             playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[nextTile].transform.position, ref velocity, smoothTime);
+            boardView.tiles[nextTile].OnLand();
             await Task.Yield();
         }
     }
@@ -116,7 +118,13 @@ public class MainView : View {
     }
 
     void Update() {
-        if (numRolls < 10) {
+        RunDiceTimer();
+
+        if (!tileAnimating && CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
+    }
+
+    private void RunDiceTimer() {
+        if (CurrencyManager.numRolls < 10) {
             timerIsRunning = true;
             timeText.gameObject.SetActive(true);
         }
@@ -130,15 +138,14 @@ public class MainView : View {
                 DisplayTime(timeRemaining);
             }
             else {
-                numRolls++;
+                CurrencyManager.numRolls++;
                 timeRemaining = TIME_TO_GET_DICE_ROLL;
             }
         }
 
-        if (!tileAnimating && numRolls > 0) { diceButton.interactable = true; }
     }
 
-    void DisplayTime(float timeToDisplay) {
+    private void DisplayTime(float timeToDisplay) {
         timeToDisplay += 1;
         float minutes = Mathf.FloorToInt(timeToDisplay / 60); 
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
