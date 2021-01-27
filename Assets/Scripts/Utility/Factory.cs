@@ -8,7 +8,7 @@ public class Factory : SingletonMain<Factory> {
     public BoardScriptableObject boardScriptableObject;
     private List<View> allViews;
 
-    public T CreateView<T>() where T : View {
+    public T CreateView<T>(Action<View> callback = null) where T : View {
         ConcatViews();
         foreach (var view in allViews) {
             if (view.GetType() == typeof(T)) {
@@ -16,6 +16,7 @@ public class Factory : SingletonMain<Factory> {
                 viewRect.anchorMin = new Vector2(0, 0);
                 viewRect.anchorMax = new Vector2(1, 1);
                 viewRect.pivot = new Vector2(0.5f, 0.5f);
+                if (callback != null) { callback(view); }
                 return (T)Instantiate(view);
             }
         }

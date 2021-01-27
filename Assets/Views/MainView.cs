@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class MainView : View {
     [SerializeField] private RectTransform menuRect;
@@ -28,7 +29,17 @@ public class MainView : View {
     private float timeRemaining = TIME_TO_GET_DICE_ROLL;
     private bool timerIsRunning = false;
     private bool tileAnimating = false;
-    private int currentTile;
+    private List<Tile> tiles;
+    private int numTiles;
+
+    private int _currentTile = 0;
+    private int currentTile {
+        get => _currentTile;
+        set {
+            _currentTile = value % numTiles;
+
+        }
+    }
 
     private enum MenuPosition {
         Closed = 100,
@@ -49,23 +60,34 @@ public class MainView : View {
         NotificationCenter.Subscribe(this, Notifications.Currency.numRollsChanged, value => {
             rolls.text = value.ToString();
         });
+        NotificationCenter.Subscribe(this, Notifications.Currency.goldChanged, value => {
+            gold.text = value.ToString();
+        });
     }
 
     private void OnDisable() {
         NotificationCenter.Unsubscribe(this, Notifications.Currency.numRollsChanged);
+        NotificationCenter.Unsubscribe(this, Notifications.Currency.goldChanged);
+    }
+
+    private void Update() {
+        RunDiceTimer();
+
+        if (!tileAnimating && CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
     }
 
     private void Start() {
-        currentTile = 0;
+        playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
+        boardView = Factory.Instance.CreateView<Board4>();
+        tiles = boardView.tiles;
+        numTiles = tiles.Count;
+        
+        TableTop.Instance.AddPiece(playerPiece, tiles[currentTile].position);
+        TableTop.Instance.SetBoard(boardView);
+        
         gold.text = CurrencyManager.gold.ToString();
         diamonds.text = CurrencyManager.diamonds.ToString();
         rolls.text = CurrencyManager.numRolls.ToString();
-
-        playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
-        LootKingdomBoard.Instance.AddPiece(playerPiece);
-        boardView = Factory.Instance.CreateView<Board4>();
-        LootKingdomBoard.Instance.SetBoard(boardView);
-        playerPiece.transform.position = boardView.tiles[0].transform.position;
 
         menuButton.onClick.AddListener(() => {
             menuOpen = !menuOpen;
@@ -81,23 +103,26 @@ public class MainView : View {
             loginView.transform.SetParent(gameObject.transform, false);
         });
 
-        diceButton.onClick.AddListener(async () => {
-            tileAnimating = true;
+        diceButton.onClick.AddListener(() => { HandleDiceRoll(); });
+    }
+
+    private async void HandleDiceRoll() {
+        tileAnimating = true;
             CurrencyManager.numRolls--;
             diceButton.interactable = false;
             var rollAmount = GetDiceRoll();
             diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
             for (int i = 0; i < rollAmount; i++) {                
                 await MovePlayerPiece();
+                tiles[currentTile].OnLand();
                 currentTile++;
             }
             if (CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
             tileAnimating = false;
-        });
     }
 
     private int GetDiceRoll() {
-        return UnityEngine.Random.Range(1, NumTiles());
+        return UnityEngine.Random.Range(1, numTiles);
     }
 
     private async Task MovePlayerPiece() {
@@ -105,21 +130,11 @@ public class MainView : View {
     }
 
     private async Task MoveToNextTile() {
-        var nextTile = (currentTile + 1) % NumTiles();
-        while ((Math.Round(playerPiece.transform.position.x, 1) != Math.Round(boardView.tiles[nextTile].transform.position.x, 1)) || (Math.Round(playerPiece.transform.position.z, 1) != Math.Round(boardView.tiles[nextTile].transform.position.z, 1))) {
-            playerPiece.transform.position = Vector3.SmoothDamp(playerPiece.transform.position, boardView.tiles[nextTile].transform.position, ref velocity, smoothTime);
+        var nextTile = (currentTile + 1) % numTiles;
+        while ((Math.Round(playerPiece.position.x, 1) != Math.Round(tiles[nextTile].position.x, 1)) || (Math.Round(playerPiece.position.z, 1) != Math.Round(tiles[nextTile].position.z, 1))) {
+            playerPiece.position = Vector3.SmoothDamp(playerPiece.position, tiles[nextTile].position, ref velocity, smoothTime);
             await Task.Yield();
         }
-    }
-
-    private int NumTiles() {
-        return boardView.tiles.Count;
-    }
-
-    void Update() {
-        RunDiceTimer();
-
-        if (!tileAnimating && CurrencyManager.numRolls > 0) { diceButton.interactable = true; }
     }
 
     private void RunDiceTimer() {
