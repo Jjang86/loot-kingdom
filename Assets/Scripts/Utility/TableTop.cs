@@ -9,7 +9,7 @@ public class TableTop : Singleton<TableTop> {
         board.transform.SetParent(tableTop.transform, false);
     }
 
-    public void AddPiece(View piece, Vector3 position) {
+    public void PlacePieceOnBoard(View piece, Vector3 position) {
         piece.transform.SetParent(tableTop.transform, false);
         piece.transform.position = position;
     }
