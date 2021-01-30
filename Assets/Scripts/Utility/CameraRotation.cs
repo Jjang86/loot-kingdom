@@ -10,11 +10,8 @@ public class CameraRotation : MonoBehaviour {
 
     void Update() {
         if (Input.GetMouseButton(1)) {
-            Debug.Log(Input.GetAxis("Mouse X"));
-            Debug.Log(Input.GetAxis("Mouse Y"));
             transform.RotateAround(target.transform.position, transform.up, Input.GetAxis("Mouse X") * speed);
             transform.RotateAround(target.transform.position, transform.right, Input.GetAxis("Mouse Y") * -speed);
-            Debug.Log("hi");
         }
 
         float fov = Camera.main.fieldOfView;
