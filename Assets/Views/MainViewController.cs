@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class MainView : View, ITimerDelegate {
+public class MainViewController : View, ITimerDelegate {
     [SerializeField] private RectTransform menuRect;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button profileButton;
@@ -14,8 +14,8 @@ public class MainView : View, ITimerDelegate {
     [SerializeField] private Button diceButton;
     [SerializeField] private TextMeshProUGUI diceRoll;
     [SerializeField] private TextMeshProUGUI gold;
-    [SerializeField] private TextMeshProUGUI diamonds;
-    [SerializeField] private TextMeshProUGUI rolls;
+    [SerializeField] private TextMeshProUGUI diamond;
+    [SerializeField] private TextMeshProUGUI roll;
     [SerializeField] private TextMeshProUGUI timeText;
 
 
@@ -42,8 +42,9 @@ public class MainView : View, ITimerDelegate {
     }
 
     private void OnEnable() {
-        NotificationCenter.Subscribe(this, Notifications.Currency.numRollsChanged, value => { rolls.text = value.ToString(); });
+        NotificationCenter.Subscribe(this, Notifications.Currency.numRollsChanged, value => { roll.text = value.ToString(); });
         NotificationCenter.Subscribe(this, Notifications.Currency.goldChanged, value => { gold.text = value.ToString(); });
+        NotificationCenter.Subscribe(this, Notifications.Currency.diamondChanged, value => { diamond.text = value.ToString(); });
         CurrencyManager.Instance.timerDelegate = this;
     }
 
@@ -66,15 +67,15 @@ public class MainView : View, ITimerDelegate {
         TableTop.Instance.SetBoard(boardView);
 
         gold.text = CurrencyManager.Instance.gold.ToString();
-        diamonds.text = CurrencyManager.Instance.diamonds.ToString();
-        rolls.text = CurrencyManager.Instance.numRolls.ToString();
+        diamond.text = CurrencyManager.Instance.diamond.ToString();
+        roll.text = CurrencyManager.Instance.numRolls.ToString();
 
         menuButton.onClick.AddListener(() => { menuOpen = !menuOpen; });
         diceButton.onClick.AddListener(() => { RollDice(); });
 
         profileButton.onClick.AddListener(() => {
-            var inventoryView = Factory.Instance.CreateView<InventoryView>();
-            inventoryView.transform.SetParent(gameObject.transform, false);
+            var inventoryViewController = Factory.Instance.CreateView<InventoryViewController>();
+            inventoryViewController.transform.SetParent(gameObject.transform, false);
         });
 
         logoutButton.onClick.AddListener(() => {

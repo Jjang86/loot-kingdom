@@ -9,6 +9,7 @@ public interface ITimerDelegate {
 
 public class CurrencyManager : Singleton<CurrencyManager> {
     public const int onLandGold = 20;
+    public const int diamondAmountOnGo = 15;
     private const float TIME_TO_GET_DICE_ROLL = 5.0f;
 
     private float timeRemaining = TIME_TO_GET_DICE_ROLL;
@@ -26,8 +27,15 @@ public class CurrencyManager : Singleton<CurrencyManager> {
             NotificationCenter.Notify(Notifications.Currency.goldChanged, value);
         }
     }
-
-    public int diamonds = 250;
+    
+    private int _diamond = 250;
+    public int diamond {
+        get => _diamond;
+        set {
+            _diamond = value;            
+            NotificationCenter.Notify(Notifications.Currency.diamondChanged, value);
+        }
+    }
     private int _numRolls = 10;
     public int numRolls {
         get => _numRolls;
@@ -45,6 +53,14 @@ public class CurrencyManager : Singleton<CurrencyManager> {
         }
     }
 
+    private int _diamondEndAmount;
+    public int diamondEndAmount {
+        get => _diamondEndAmount;
+        set {
+            _diamondEndAmount = value;
+        }
+    }
+
     void Update() {
         RunDiceTimer();
 
@@ -56,10 +72,38 @@ public class CurrencyManager : Singleton<CurrencyManager> {
                 gold++;
             }
         }
+
+        if (gold > goldEndAmount) {
+            timer += Time.deltaTime;
+
+            if (timer >= delayAmount) {
+                timer = 0f;
+                gold--;
+            }
+        }
+
+        if (diamond < diamondEndAmount) {
+            timer += Time.deltaTime;
+
+            if (timer >= delayAmount) {
+                timer = 0f;
+                diamond++;
+            }
+        }
+
+        if (diamond > diamondEndAmount) {
+            timer += Time.deltaTime;
+
+            if (timer >= delayAmount) {
+                timer = 0f;
+                diamond--;
+            }
+        }
     }
     
     void Start() {
         goldEndAmount = gold;
+        diamondEndAmount = diamond;
     }
 
     private void RunDiceTimer() {

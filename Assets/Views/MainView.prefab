@@ -1411,8 +1411,8 @@ MonoBehaviour:
   diceButton: {fileID: 1845524645200459953}
   diceRoll: {fileID: 3581067445671309378}
   gold: {fileID: 7135826119301265099}
-  diamonds: {fileID: 7135826119228784283}
-  rolls: {fileID: 7135826118117038757}
+  diamond: {fileID: 7135826119228784283}
+  roll: {fileID: 7135826118117038757}
   timeText: {fileID: 7581746778993492069}
 --- !u!1 &7135826118117038754
 GameObject:

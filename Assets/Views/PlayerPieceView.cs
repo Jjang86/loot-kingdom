@@ -56,16 +56,17 @@ public class PlayerPieceView : View {
         }
     }
 
-    public async Task MoveToNextTile(List<Tile> tiles) {
+    public async Task MoveToNextTile(List<Tile> tiles, bool finalTile = false) {
         var nextTileIndex = (currentTileIndex + 1) % tiles.Count;
+        if (finalTile) { { tiles[nextTileIndex].OnFinalLand(); }}
         await MoveStraightToTile(tiles[nextTileIndex]);
         currentTileIndex++;
     }
 
     public async Task MoveMultipleTiles(int rollAmount, List<Tile> tiles) {
-        for (int i = 0; i < rollAmount; i++) {
+        for (int rollCounter = 0; rollCounter < rollAmount; rollCounter++) {
             var nextTileIndex = (currentTileIndex + 1) % tiles.Count;
-            await MoveToNextTile(tiles);
+            await MoveToNextTile(tiles, rollCounter == rollAmount - 1);
         }
     }
 

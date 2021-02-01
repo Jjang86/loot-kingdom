@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryView : View {
+public class InventoryViewController : View {
     [SerializeField] private GameObject upperSectionContainer;
     [SerializeField] private GameObject lowerSection;
     [SerializeField] private Button closeButton;
@@ -13,6 +13,7 @@ public class InventoryView : View {
     [SerializeField] private Transform xTransform;
     [SerializeField] private Transform yTransform;
 
+    private const int DEFAULT_NUMBER_OF_SLOTS = 24;
 
     private EquipmentView equipmentView;
     private CraftingView craftingView;
@@ -58,7 +59,7 @@ public class InventoryView : View {
         view.gameObject.SetActive(true);
     }
 
-    void Awake() {
+    void Start() {
         equipmentView = Factory.Instance.CreateView<EquipmentView>();
         equipmentView.transform.SetParent(upperSectionContainer.transform,false);
 
@@ -76,12 +77,21 @@ public class InventoryView : View {
         itemListView.transform.SetParent(lowerSection.transform, false);
 
         ShowUpper(equipmentView);
+        PopulateInventory();
 
         closeButton.onClick.AddListener(() => { Destroy(gameObject); });
         inventoryButton.onClick.AddListener(() => { currentTab = Tab.Inventory; });
         craftingButton.onClick.AddListener(() => { currentTab = Tab.Crafting; });
         defenceButton.onClick.AddListener(() => { currentTab = Tab.Defence; });
         tileUpgradesButton.onClick.AddListener(() => { currentTab = Tab.TileUpgrades; });
+    }
 
+    private void PopulateInventory() {
+        //TODO: Need to create a list of items and populate
+        for (int slotNumber = 0; slotNumber < DEFAULT_NUMBER_OF_SLOTS; slotNumber++) {
+            var itemSlot = Factory.Instance.CreateView<ItemSlotView>();
+            itemSlot.type = ItemSlotType.Any;
+            itemSlot.transform.SetParent(itemListView.grid.transform);
+        }
     }
 }
