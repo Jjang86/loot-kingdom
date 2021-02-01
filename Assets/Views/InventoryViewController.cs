@@ -60,20 +60,20 @@ public class InventoryViewController : View {
     }
 
     void Start() {
-        equipmentView = Factory.Instance.CreateView<EquipmentView>();
+        equipmentView = Factory.CreateView<EquipmentView>();
         equipmentView.transform.SetParent(upperSectionContainer.transform,false);
 
-        craftingView = Factory.Instance.CreateView<CraftingView>();
+        craftingView = Factory.CreateView<CraftingView>();
         craftingView.transform.SetParent(upperSectionContainer.transform, false);
 
         // TODO: Data drive board based on user's level
-        boardView = Factory.Instance.CreateView<Board4>();
+        boardView = Factory.CreateView<Board4>();
         boardView.transform.SetParent(upperSectionContainer.transform, false);
         // boardView.yTransform.rotation = Quaternion.Euler(-90.0f, 0.0f, 0.0f);
         // boardView.xTransform.rotation = Quaternion.identity;
         // boardView.xTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
-        itemListView = Factory.Instance.CreateView<ItemListView>();
+        itemListView = Factory.CreateView<ItemListView>();
         itemListView.transform.SetParent(lowerSection.transform, false);
 
         ShowUpper(equipmentView);
@@ -89,7 +89,7 @@ public class InventoryViewController : View {
     private void PopulateInventory() {
         //TODO: Need to create a list of items and populate
         for (int slotNumber = 0; slotNumber < DEFAULT_NUMBER_OF_SLOTS; slotNumber++) {
-            var itemSlot = Factory.Instance.CreateView<ItemSlotView>();
+            var itemSlot = Factory.CreateView<ItemSlotView>();
             itemSlot.type = ItemSlotType.Any;
             itemSlot.transform.SetParent(itemListView.grid.transform);
         }

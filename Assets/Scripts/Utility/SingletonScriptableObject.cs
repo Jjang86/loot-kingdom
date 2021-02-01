@@ -30,7 +30,7 @@ public abstract class SingletonScriptableObject<T> : ScriptableObject where T : 
     }
 
     public static T loadFromResources() {
-        return (T)Resources.Load($"Config/{getTypeNameSansNamespace()}");
+        return (T)Resources.Load($"{getTypeNameSansNamespace()}");
     }
 
     private static T createRuntimeCopy() {

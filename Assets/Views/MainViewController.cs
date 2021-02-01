@@ -22,7 +22,7 @@ public class MainViewController : View, ITimerDelegate {
     private PlayerPieceView playerPiece;
     private Board boardView;
     private bool tileAnimating = false;
-    private List<Tile> tiles;
+    private List<TileView> tiles;
     private int numTiles;
 
     private enum MenuPosition {
@@ -58,8 +58,8 @@ public class MainViewController : View, ITimerDelegate {
     }
 
     private void Start() {
-        playerPiece = Factory.Instance.CreateView<PlayerPieceView>();
-        boardView = Factory.Instance.CreateView<Board4>();
+        playerPiece = Factory.CreateView<PlayerPieceView>();
+        boardView = Factory.CreateView<Board4>();
         tiles = boardView.tiles;
         numTiles = tiles.Count;
         
@@ -74,7 +74,7 @@ public class MainViewController : View, ITimerDelegate {
         diceButton.onClick.AddListener(() => { RollDice(); });
 
         profileButton.onClick.AddListener(() => {
-            var inventoryViewController = Factory.Instance.CreateView<InventoryViewController>();
+            var inventoryViewController = Factory.CreateView<InventoryViewController>();
             inventoryViewController.transform.SetParent(gameObject.transform, false);
         });
 

@@ -12,16 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26ebbe0895c647ef94e44b00e36e27d, type: 3}
   m_Name: Factory
   m_EditorClassIdentifier: 
+  viewTypes:
+  - Board4
+  - CraftingView
+  - EquipmentView
+  - InventoryViewController
+  - ItemListView
+  - ItemSlotView
+  - LoginView
+  - MainViewController
+  - MenuView
+  - PlayerPieceView
+  - SignupView
+  - TileView
   viewPrefabs:
-  - {fileID: 7129370848986719007, guid: 91469480c8fa148ca89d796d62f2c61e, type: 3}
-  - {fileID: 2776986720750303543, guid: ba5e4b1b121714dd9a4fc96669ee4955, type: 3}
-  - {fileID: 2377176341776478006, guid: 09a41da8afe594480a97af21559472f0, type: 3}
-  - {fileID: 1633350025849441945, guid: ea01e92a70ace4f429031d374f29d232, type: 3}
+  - {fileID: 7879979139529149410, guid: 373a9a1e55603433d8afbf69940df16b, type: 3}
+  - {fileID: -6125006359233653117, guid: 55f4c5924761b4db3b99774287f483dd, type: 3}
+  - {fileID: -1802735848094234551, guid: 4dcf02f0e22f14503b9fc59d22fb9944, type: 3}
   - {fileID: 11506101231101950, guid: 3b19885d256ae4d8ca0524c0311a300f, type: 3}
   - {fileID: -8730421098435355188, guid: 887cb75bdae6f49a99908e73d61efe7e, type: 3}
-  - {fileID: -1802735848094234551, guid: 4dcf02f0e22f14503b9fc59d22fb9944, type: 3}
-  - {fileID: -6125006359233653117, guid: 55f4c5924761b4db3b99774287f483dd, type: 3}
-  - {fileID: 5339573660678127954, guid: d5641c2b7bd7c434ebd87997d128ae23, type: 3}
   - {fileID: 4077420453467432172, guid: 976e6f9b975d847bb8301ac974f6a9bf, type: 3}
-  boardScriptableObject: {fileID: 11400000, guid: 5393316efe5364978b90d4c18c21c90a,
-    type: 2}
+  - {fileID: 7129370848986719007, guid: 91469480c8fa148ca89d796d62f2c61e, type: 3}
+  - {fileID: 2776986720750303543, guid: ba5e4b1b121714dd9a4fc96669ee4955, type: 3}
+  - {fileID: 1633350025849441945, guid: ea01e92a70ace4f429031d374f29d232, type: 3}
+  - {fileID: 5339573660678127954, guid: d5641c2b7bd7c434ebd87997d128ae23, type: 3}
+  - {fileID: 2377176341776478006, guid: 09a41da8afe594480a97af21559472f0, type: 3}
+  - {fileID: -1303628303861697991, guid: 43fc3c8595bd547cb958e19b983bac74, type: 3}
+  preloadSpriteNames:
+  - dice
+  - galaxy
+  - menu
+  - profilephoto
+  - settings-cog
+  - white-circle
+  preloadSprites:
+  - {fileID: 21300000, guid: c92d0ff17839f42529fee0c92a92ee13, type: 3}
+  - {fileID: 21300000, guid: e642340b3693247398663e0d097608f6, type: 3}
+  - {fileID: 21300000, guid: cd44897adc0c444e28383175ab1b8f39, type: 3}
+  - {fileID: 21300000, guid: 64c0c77c47fcf4da592c60fc908fbea7, type: 3}
+  - {fileID: 21300000, guid: 9d41a37b606a841f38b20eda8d5ef423, type: 3}
+  - {fileID: 21300000, guid: fe7cb7eeade2b48a3844e0ce030d86cd, type: 3}

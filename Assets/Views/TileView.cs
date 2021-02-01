@@ -8,7 +8,7 @@ public enum SpecialTile {
     Minigame
 }
 
-public class Tile : View {
+public class TileView : View {
     [SerializeField] private SpecialTile specialTile;
 
     public Vector3 position {

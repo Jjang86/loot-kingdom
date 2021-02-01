@@ -8,7 +8,7 @@ public class LoginView : View {
     
     void Awake() {
         signupButton.onClick.AddListener(() => {
-            var signupView = Factory.Instance.CreateView<SignupView>();
+            var signupView = Factory.CreateView<SignupView>();
             signupView.transform.SetParent(gameObject.transform, false);
         });
     }

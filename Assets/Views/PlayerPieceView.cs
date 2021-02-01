@@ -47,7 +47,7 @@ public class PlayerPieceView : View {
         set => transform.position = value;
     }
 
-    public async Task MoveStraightToTile(Tile destination) {
+    public async Task MoveStraightToTile(TileView destination) {
         CheckAndSetHeading(this.position, destination.position);
         destination.OnLand();
         while ((Math.Round(this.position.x, 1) != Math.Round(destination.position.x, 1)) || (Math.Round(this.position.z, 1) != Math.Round(destination.position.z, 1))) {
@@ -56,14 +56,14 @@ public class PlayerPieceView : View {
         }
     }
 
-    public async Task MoveToNextTile(List<Tile> tiles, bool finalTile = false) {
+    public async Task MoveToNextTile(List<TileView> tiles, bool finalTile = false) {
         var nextTileIndex = (currentTileIndex + 1) % tiles.Count;
         if (finalTile) { { tiles[nextTileIndex].OnFinalLand(); }}
         await MoveStraightToTile(tiles[nextTileIndex]);
         currentTileIndex++;
     }
 
-    public async Task MoveMultipleTiles(int rollAmount, List<Tile> tiles) {
+    public async Task MoveMultipleTiles(int rollAmount, List<TileView> tiles) {
         for (int rollCounter = 0; rollCounter < rollAmount; rollCounter++) {
             var nextTileIndex = (currentTileIndex + 1) % tiles.Count;
             await MoveToNextTile(tiles, rollCounter == rollAmount - 1);
