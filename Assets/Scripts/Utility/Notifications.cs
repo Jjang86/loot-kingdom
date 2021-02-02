@@ -7,5 +7,11 @@
 
     public static class UI {
         public const string logout = nameof(logout);
+        public const string onExitInventoryView = nameof(onExitInventoryView);
+    }
+
+    public static class Camera {
+        public const string avatarSpotlightActive = nameof(avatarSpotlightActive);
+        public const string tableTopActive = nameof(tableTopActive);
     }
 }

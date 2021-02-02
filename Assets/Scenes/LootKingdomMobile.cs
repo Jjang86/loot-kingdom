@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 public class LootKingdomMobile : MonoBehaviour {
-    [SerializeField] private GameObject backgroundContainer;
-
+    [SerializeField] private GameObject tableTop;
+    [SerializeField] private GameObject avatarSpotlight;
     private LoginView loginView;
 
     void Start() {
@@ -21,9 +21,21 @@ public class LootKingdomMobile : MonoBehaviour {
         });
 
         NotificationCenter.Subscribe(this, Notifications.UI.logout, OnLogout);
+        NotificationCenter.Subscribe(this, Notifications.Camera.avatarSpotlightActive, OnActiveAvatarSpotlight);
+        NotificationCenter.Subscribe(this, Notifications.Camera.tableTopActive, OnActiveTableTop);
     }
 
-    public void OnLogout() {
+    private void OnLogout() {
         loginView.gameObject.SetActive(true);
+    }
+
+    private void OnActiveAvatarSpotlight() {
+        tableTop.SetActive(false);
+        avatarSpotlight.SetActive(true);
+    }
+
+    private void OnActiveTableTop() {
+        avatarSpotlight.SetActive(false);
+        tableTop.SetActive(true);
     }
 }

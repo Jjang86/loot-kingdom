@@ -7,6 +7,7 @@ using TMPro;
 using System.Collections.Generic;
 
 public class MainViewController : View, ITimerDelegate {
+    [SerializeField] private GameObject viewContainer;
     [SerializeField] private RectTransform menuRect;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button profileButton;
@@ -74,6 +75,7 @@ public class MainViewController : View, ITimerDelegate {
         diceButton.onClick.AddListener(() => { RollDice(); });
 
         profileButton.onClick.AddListener(() => {
+            viewContainer.SetActive(false);
             var inventoryViewController = Factory.CreateView<InventoryViewController>();
             inventoryViewController.transform.SetParent(gameObject.transform, false);
         });
@@ -82,6 +84,8 @@ public class MainViewController : View, ITimerDelegate {
             NotificationCenter.Notify(Notifications.UI.logout);
             Destroy(gameObject);
         });
+
+        NotificationCenter.Subscribe(this, Notifications.UI.onExitInventoryView, EnableView);
     }
 
     private async void RollDice() {
@@ -96,6 +100,11 @@ public class MainViewController : View, ITimerDelegate {
         tileAnimating = false;
     }
 
+    private void EnableView() {
+        NotificationCenter.Notify(Notifications.Camera.tableTopActive);
+        viewContainer.SetActive(true);
+    }
+    
     private int GetRollAmount() { return UnityEngine.Random.Range(1, numTiles); }
     public void OnShowTimer() { timeText.gameObject.SetActive(true); }
     public void OnHideTimer() { timeText.gameObject.SetActive(false); }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CameraRotation : MonoBehaviour {
+public class CameraFreeRotation : MonoBehaviour {
     [SerializeField] private GameObject target;
 
     private float speed = 5.0f;

@@ -79,11 +79,16 @@ public class InventoryViewController : View {
         ShowUpper(equipmentView);
         PopulateInventory();
 
-        closeButton.onClick.AddListener(() => { Destroy(gameObject); });
+        closeButton.onClick.AddListener(() => {
+            NotificationCenter.Notify(Notifications.UI.onExitInventoryView);
+            Destroy(gameObject);
+        });
         inventoryButton.onClick.AddListener(() => { currentTab = Tab.Inventory; });
         craftingButton.onClick.AddListener(() => { currentTab = Tab.Crafting; });
         defenceButton.onClick.AddListener(() => { currentTab = Tab.Defence; });
         tileUpgradesButton.onClick.AddListener(() => { currentTab = Tab.TileUpgrades; });
+
+        NotificationCenter.Notify(Notifications.Camera.avatarSpotlightActive);
     }
 
     private void PopulateInventory() {
