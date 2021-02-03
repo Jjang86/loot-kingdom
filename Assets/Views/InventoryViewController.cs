@@ -107,6 +107,42 @@ public class InventoryViewController : View {
                     }
                 }
             },
+            new Item {
+                id = "200",
+                name = "Noble shield",
+                equipped = true,
+                type = ItemType.OffHand,
+                stats = new List<Stat> {
+                    new Stat {
+                        type = StatType.Crit,
+                        value = 5
+                    }
+                }
+            },
+            new Item {
+                id = "201",
+                name = "Holy shield",
+                equipped = false,
+                type = ItemType.OffHand,
+                stats = new List<Stat> {
+                    new Stat {
+                        type = StatType.Crit,
+                        value = 5
+                    }
+                }
+            },
+            new Item {
+                id = "202",
+                name = "Unholy shield",
+                equipped = false,
+                type = ItemType.OffHand,
+                stats = new List<Stat> {
+                    new Stat {
+                        type = StatType.Crit,
+                        value = 5
+                    }
+                }
+            },
         };
 
         ShowUpper(equipmentView);
@@ -158,6 +194,12 @@ public class InventoryViewController : View {
                 return Factory.GetSprite("sword-ice");
             case "101":
                 return Factory.GetSprite("sword-fire");
+            case "200":
+                return Factory.GetSprite("shield-noble");  
+            case "201":
+                return Factory.GetSprite("shield-holy");
+            case "202":
+                return Factory.GetSprite("shield-unholy");            
             default:
                 throw new Exception($"Icon not found for item id: {id}");
         }

@@ -41,8 +41,14 @@ MonoBehaviour:
   - {fileID: 2377176341776478006, guid: 09a41da8afe594480a97af21559472f0, type: 3}
   - {fileID: -1303628303861697991, guid: 43fc3c8595bd547cb958e19b983bac74, type: 3}
   preloadSpriteNames:
+  - shield-holy
+  - shield-noble
+  - shield-unholy
   - sword-fire
   - sword-ice
   preloadSprites:
+  - {fileID: 21300000, guid: e6c9cb003cba146209ddbc11b6722acd, type: 3}
+  - {fileID: 21300000, guid: f8047196cbc4543bebbf28de3bcec0fd, type: 3}
+  - {fileID: 21300000, guid: 1fbc9598b9f6f486bb8f95cf2485081b, type: 3}
   - {fileID: 21300000, guid: 98d182d9a7574408fb57d73dbece297a, type: 3}
   - {fileID: 21300000, guid: 604ab8b992c684396a778b51c72fd143, type: 3}
