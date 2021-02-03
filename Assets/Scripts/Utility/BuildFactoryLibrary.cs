@@ -66,7 +66,7 @@ public class BuildFactoryLibrary : MonoBehaviour {
     }
 
     private static void BuildSprites(Factory asset) {
-        var paths = new List<string>() { "Assets/Sprites" };
+        var paths = new List<string>() { "Assets/SpritesFactory" };
 
         string[] guids = AssetDatabase.FindAssets("t:Sprite", paths.ToArray());
 

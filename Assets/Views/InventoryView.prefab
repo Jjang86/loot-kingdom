@@ -489,7 +489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+  m_Color: {r: 1, g: 0.53045756, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1174,7 +1174,6 @@ MonoBehaviour:
   tileUpgradesButton: {fileID: 6211237408095497054}
   xTransform: {fileID: 0}
   yTransform: {fileID: 0}
-  playerPieceView: {fileID: 0}
 --- !u!1 &7856218847395772505
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,6 +24,7 @@ public enum StatType {
 public class Item {
     public string id;
     public string name;
+    public bool equipped;
     public ItemType type;
     public List<Stat> stats;
 }
