@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryViewController : View {
+public class InventoryView : View {
     [SerializeField] private GameObject upperSectionContainer;
     [SerializeField] private GameObject lowerSection;
     [SerializeField] private Button closeButton;
@@ -150,8 +150,8 @@ public class InventoryViewController : View {
         PopulateAllItems();
 
         closeButton.onClick.AddListener(() => {
-            NotificationCenter.Notify(Notifications.UI.onExitInventoryView);
-            Destroy(gameObject);
+            NotificationCenter.Notify(Notifications.Camera.tableTopActive);
+            navigationView.Pop();
         });
         inventoryButton.onClick.AddListener(() => { currentTab = Tab.Inventory; });
         craftingButton.onClick.AddListener(() => { currentTab = Tab.Crafting; });

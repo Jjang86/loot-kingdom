@@ -3,30 +3,28 @@
 public class LootKingdomMobile : MonoBehaviour {
     [SerializeField] private GameObject tableTop;
     [SerializeField] private GameObject avatarSpotlight;
-    private LoginView loginView;
+    private NavigationView mainNavView;
 
     void Start() {
-        loginView = Factory.CreateView<LoginView>();   
-        loginView.transform.SetParent(gameObject.transform, false);
+        mainNavView = Factory.CreateView<NavigationView>();
+        mainNavView.SetRoot(gameObject);
+        
+        var loginView = Factory.CreateView<LoginView>();
+
+        mainNavView.Push(loginView);
 
         loginView.loginButton.onClick.AddListener(() => {
-            var mainView = Factory.CreateView<MainViewController>();
-            mainView.transform.SetParent(gameObject.transform, false);
-            loginView.gameObject.SetActive(false);
+            var mainView = Factory.CreateView<MainView>();
+            loginView.navigationView.Push(mainView);
         });
 
         loginView.signupButton.onClick.AddListener(() => {
             var signupView = Factory.CreateView<SignupView>();
-            signupView.transform.SetParent(gameObject.transform, false);
+            loginView.navigationView.Push(signupView);
         });
 
-        NotificationCenter.Subscribe(this, Notifications.UI.logout, OnLogout);
         NotificationCenter.Subscribe(this, Notifications.Camera.avatarSpotlightActive, OnActiveAvatarSpotlight);
         NotificationCenter.Subscribe(this, Notifications.Camera.tableTopActive, OnActiveTableTop);
-    }
-
-    private void OnLogout() {
-        loginView.gameObject.SetActive(true);
     }
 
     private void OnActiveAvatarSpotlight() {

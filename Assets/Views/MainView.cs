@@ -6,8 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class MainViewController : View, ITimerDelegate {
-    [SerializeField] private GameObject viewContainer;
+public class MainView : View, ITimerDelegate {
     [SerializeField] private RectTransform menuRect;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button profileButton;
@@ -20,6 +19,8 @@ public class MainViewController : View, ITimerDelegate {
     [SerializeField] private TextMeshProUGUI timeText;
 
 
+
+    private InventoryView inventoryView;
     private PlayerPieceView playerPiece;
     private Board boardView;
     private bool tileAnimating = false;
@@ -73,19 +74,11 @@ public class MainViewController : View, ITimerDelegate {
 
         menuButton.onClick.AddListener(() => { menuOpen = !menuOpen; });
         diceButton.onClick.AddListener(() => { RollDice(); });
-
+        logoutButton.onClick.AddListener(() => { navigationView.Pop(); });
         profileButton.onClick.AddListener(() => {
-            viewContainer.SetActive(false);
-            var inventoryViewController = Factory.CreateView<InventoryViewController>();
-            inventoryViewController.transform.SetParent(gameObject.transform, false);
+            inventoryView = Factory.CreateView<InventoryView>();
+            navigationView.Push(inventoryView);
         });
-
-        logoutButton.onClick.AddListener(() => {
-            NotificationCenter.Notify(Notifications.UI.logout);
-            Destroy(gameObject);
-        });
-
-        NotificationCenter.Subscribe(this, Notifications.UI.onExitInventoryView, EnableView);
     }
 
     private async void RollDice() {
@@ -100,9 +93,8 @@ public class MainViewController : View, ITimerDelegate {
         tileAnimating = false;
     }
 
-    private void EnableView() {
-        NotificationCenter.Notify(Notifications.Camera.tableTopActive);
-        viewContainer.SetActive(true);
+    private void OnDestroy() {
+        TableTop.Instance.ClearBoard();
     }
     
     private int GetRollAmount() { return UnityEngine.Random.Range(1, numTiles); }

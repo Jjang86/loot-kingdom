@@ -108,12 +108,12 @@ public class CurrencyManager : Singleton<CurrencyManager> {
 
     private void RunDiceTimer() {
         if (numRolls < 10) {
+            if (!timerIsRunning) { timerDelegate?.OnShowTimer(); }
             timerIsRunning = true;
-            timerDelegate?.OnShowTimer();
         }
         else {
+            if (timerIsRunning) { timerDelegate?.OnHideTimer(); }
             timerIsRunning = false;
-            timerDelegate?.OnHideTimer();
         }
         if (timerIsRunning) {
             if (timeRemaining > 0) {

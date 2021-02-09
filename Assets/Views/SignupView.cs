@@ -7,11 +7,11 @@ public class SignupView : View {
 
     void Awake() {
         signupButton.onClick.AddListener(() => {
-            Destroy(gameObject);
+            navigationView.Pop();
         });
 
         loginButton.onClick.AddListener(() => {
-            Destroy(gameObject);
+            navigationView.Pop();
         });
     }
 }

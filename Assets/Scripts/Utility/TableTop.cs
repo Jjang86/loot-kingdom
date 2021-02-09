@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TableTop : Singleton<TableTop> {
-    [SerializeField] private GameObject tableTop;
+    [SerializeField] private GameObject pieces;
 
     public void SetBoard(Board board) {
-        board.transform.SetParent(tableTop.transform, false);
+        board.transform.SetParent(pieces.transform, false);
     }
 
     public void PlacePieceOnBoard(View piece, Vector3 position) {
-        piece.transform.SetParent(tableTop.transform, false);
+        piece.transform.SetParent(pieces.transform, false);
         piece.transform.position = position;
+    }
+
+    public void ClearBoard() {
+        foreach (Transform child in pieces.transform) {
+            Destroy(child.gameObject);
+        }
     }
 }
