@@ -261,10 +261,9 @@ public class InventoryView : View {
     }
 
     private void PopulateUnequippedItems() {
-        foreach (var item in unequippedItems) {
-            var itemSlot = Factory.CreateView<ItemSlotView>(slotView => {
-                slotView.type = ItemSlotType.Any;
-            });
+        var sortedItems = unequippedItems.OrderBy(item => item.id).ToList();
+        foreach (var item in sortedItems) {
+            var itemSlot = Factory.CreateView<ItemSlotView>();
             itemSlot.transform.SetParent(itemListView.grid.transform, false);
 
             var itemView = Factory.CreateView<ItemView>(view => {
@@ -275,11 +274,9 @@ public class InventoryView : View {
             itemView.transform.SetParent(itemSlot.transform, false);
         }
 
-        if (unequippedItems.Count < 24) {
-            for (int i = unequippedItems.Count; i < 24; i++) {
-                var itemSlot = Factory.CreateView<ItemSlotView>(slotView => {
-                    slotView.type = ItemSlotType.Any;
-                });
+        if (sortedItems.Count < 24) {
+            for (int i = sortedItems.Count; i < 24; i++) {
+                var itemSlot = Factory.CreateView<ItemSlotView>();
                 itemSlot.transform.SetParent(itemListView.grid.transform);
             }
         }
