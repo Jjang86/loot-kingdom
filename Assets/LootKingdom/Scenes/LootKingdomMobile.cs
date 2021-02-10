@@ -8,20 +8,7 @@ public class LootKingdomMobile : MonoBehaviour {
     void Start() {
         mainNavView = Factory.CreateView<NavigationView>();
         mainNavView.SetRoot(gameObject);
-        
-        var loginView = Factory.CreateView<LoginView>();
-
-        mainNavView.Push(loginView);
-
-        loginView.loginButton.onClick.AddListener(() => {
-            var mainView = Factory.CreateView<MainView>();
-            loginView.navigationView.Push(mainView);
-        });
-
-        loginView.signupButton.onClick.AddListener(() => {
-            var signupView = Factory.CreateView<SignupView>();
-            loginView.navigationView.Push(signupView);
-        });
+        mainNavView.Push(Factory.CreateView<LoginViewController>());
 
         NotificationCenter.Subscribe(this, Notifications.Camera.avatarSpotlightActive, OnActiveAvatarSpotlight);
         NotificationCenter.Subscribe(this, Notifications.Camera.tableTopActive, OnActiveTableTop);

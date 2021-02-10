@@ -474,7 +474,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 1.529275e-28, z: 4.5853e-41, w: 1941504}
+  m_BoundingSphereOverride: {x: 6.5, y: -9.5, z: 6.921875, w: 1.5e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -795,7 +795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96df4ee139b92419993b87c954c93a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieces: {fileID: 1279096410}
+  piecesInspector: {fileID: 1279096410}
 --- !u!1 &1279096410
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class MainView : View, ITimerDelegate {
+public class MainViewController : View, ITimerDelegate {
     [SerializeField] private RectTransform menuRect;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button profileButton;
@@ -18,9 +18,6 @@ public class MainView : View, ITimerDelegate {
     [SerializeField] private TextMeshProUGUI roll;
     [SerializeField] private TextMeshProUGUI timeText;
 
-
-
-    private InventoryView inventoryView;
     private PlayerPieceView playerPiece;
     private Board boardView;
     private bool tileAnimating = false;
@@ -53,6 +50,7 @@ public class MainView : View, ITimerDelegate {
     private void OnDisable() {
         NotificationCenter.Unsubscribe(this, Notifications.Currency.numRollsChanged);
         NotificationCenter.Unsubscribe(this, Notifications.Currency.goldChanged);
+        NotificationCenter.Unsubscribe(this, Notifications.Currency.diamondChanged);
     }
 
     private void Update() {
@@ -65,8 +63,8 @@ public class MainView : View, ITimerDelegate {
         tiles = boardView.tiles;
         numTiles = tiles.Count;
         
-        TableTop.Instance.PlacePieceOnBoard(playerPiece, tiles[playerPiece.currentTileIndex].position);
-        TableTop.Instance.SetBoard(boardView);
+        TableTop.PlacePieceOnBoard(playerPiece, tiles[playerPiece.currentTileIndex].position);
+        TableTop.SetBoard(boardView);
 
         gold.text = CurrencyManager.Instance.gold.ToString();
         diamond.text = CurrencyManager.Instance.diamond.ToString();
@@ -75,10 +73,7 @@ public class MainView : View, ITimerDelegate {
         menuButton.onClick.AddListener(() => { menuOpen = !menuOpen; });
         diceButton.onClick.AddListener(() => { RollDice(); });
         logoutButton.onClick.AddListener(() => { navigationView.Pop(); });
-        profileButton.onClick.AddListener(() => {
-            inventoryView = Factory.CreateView<InventoryView>();
-            navigationView.Push(inventoryView);
-        });
+        profileButton.onClick.AddListener(() => { navigationView.Push(Factory.CreateView<InventoryViewController>()); });
     }
 
     private async void RollDice() {
@@ -94,7 +89,7 @@ public class MainView : View, ITimerDelegate {
     }
 
     private void OnDestroy() {
-        TableTop.Instance.ClearBoard();
+        TableTop.ClearBoard();
     }
     
     private int GetRollAmount() { return UnityEngine.Random.Range(1, numTiles); }

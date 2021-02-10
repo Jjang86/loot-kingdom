@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryView : View {
+public class InventoryViewController : View {
     [SerializeField] private GameObject upperSectionContainer;
     [SerializeField] private GameObject lowerSection;
     [SerializeField] private Button closeButton;

@@ -12,7 +12,7 @@ public class BuildFactoryLibrary : MonoBehaviour {
     static void BuildFactory() {
 
         Factory asset = ScriptableObject.CreateInstance<Factory>();
-        var path = "Assets/Resources/Factory.asset";
+        var path = "Assets/LootKingdom/Resources/Factory.asset";
         AssetDatabase.DeleteAsset(path);
         AssetDatabase.CreateAsset(asset, path);
 
@@ -66,7 +66,7 @@ public class BuildFactoryLibrary : MonoBehaviour {
     }
 
     private static void BuildSprites(Factory asset) {
-        var paths = new List<string>() { "Assets/SpritesFactory" };
+        var paths = new List<string>() { "Assets/LootKingdom/SpritesFactory" };
 
         string[] guids = AssetDatabase.FindAssets("t:Sprite", paths.ToArray());
 

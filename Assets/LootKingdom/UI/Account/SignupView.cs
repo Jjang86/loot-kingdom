@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SignupView : View {
+public class SignupViewController : View {
     [SerializeField] private Button signupButton;
     [SerializeField] private Button loginButton;
 
