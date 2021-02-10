@@ -6,12 +6,7 @@ public class SignupViewController : View {
     [SerializeField] private Button loginButton;
 
     void Awake() {
-        signupButton.onClick.AddListener(() => {
-            navigationView.Pop();
-        });
-
-        loginButton.onClick.AddListener(() => {
-            navigationView.Pop();
-        });
+        signupButton.onClick.AddListener(() => { navigationView.Pop(); });
+        loginButton.onClick.AddListener(() => { navigationView.Pop(); });
     }
 }
