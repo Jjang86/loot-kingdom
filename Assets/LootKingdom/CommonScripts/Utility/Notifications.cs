@@ -14,4 +14,8 @@
         public const string avatarSpotlightActive = nameof(avatarSpotlightActive);
         public const string tableTopActive = nameof(tableTopActive);
     }
+
+    public static class Dice {
+        public const string animationComplete = nameof(animationComplete);
+    }
 }

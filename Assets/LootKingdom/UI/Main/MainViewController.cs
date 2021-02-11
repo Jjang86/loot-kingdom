@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +18,7 @@ public class MainViewController : View, ITimerDelegate {
 
     private PlayerPieceView playerPiece;
     private Board boardView;
+    private Dice dice;
     private bool tileAnimating = false;
     private List<TileView> tiles;
     private int numTiles;
@@ -44,6 +43,12 @@ public class MainViewController : View, ITimerDelegate {
         NotificationCenter.Subscribe(this, Notifications.Currency.numRollsChanged, value => { roll.text = value.ToString(); });
         NotificationCenter.Subscribe(this, Notifications.Currency.goldChanged, value => { gold.text = value.ToString(); });
         NotificationCenter.Subscribe(this, Notifications.Currency.diamondChanged, value => { diamond.text = value.ToString(); });
+        NotificationCenter.Subscribe(this, Notifications.Dice.animationComplete, async rollAmount => {
+            diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
+            await playerPiece.MoveMultipleTiles((int)(rollAmount), tiles);
+            if (CurrencyManager.Instance.numRolls > 0) { diceButton.interactable = true; }
+            tileAnimating = false;
+        });
         CurrencyManager.Instance.timerDelegate = this;
     }
 
@@ -60,6 +65,7 @@ public class MainViewController : View, ITimerDelegate {
     private void Start() {
         playerPiece = Factory.CreateView<PlayerPieceView>();
         boardView = Factory.CreateView<Board4>();
+        dice = Factory.CreateView<Dice>();
         tiles = boardView.tiles;
         numTiles = tiles.Count;
         
@@ -76,24 +82,16 @@ public class MainViewController : View, ITimerDelegate {
         profileButton.onClick.AddListener(() => { navigationView.Push(Factory.CreateView<InventoryViewController>()); });
     }
 
-    private async void RollDice() {
+    private void RollDice() {
         tileAnimating = true;
         CurrencyManager.Instance.numRolls--;
         diceButton.interactable = false;
-        var rollAmount = GetRollAmount();
-        diceRoll.text = $"Rolled a {rollAmount.ToString()}!";
-        await playerPiece.MoveMultipleTiles(rollAmount, tiles);
-        // await playerPiece.MoveToNextTile(tiles);
-        if (CurrencyManager.Instance.numRolls > 0) { diceButton.interactable = true; }
-        tileAnimating = false;
-    }
-
-    private void OnDestroy() {
-        TableTop.ClearBoard();
+        dice.Roll();
     }
     
-    private int GetRollAmount() { return UnityEngine.Random.Range(1, numTiles); }
+    private float GetRandomEulerAngle() { return Random.Range(0, 360); }
     public void OnShowTimer() { timeText.gameObject.SetActive(true); }
     public void OnHideTimer() { timeText.gameObject.SetActive(false); }
     public void OnSetTimerText(string time) { timeText.text = time; }
+    private void OnDestroy() { TableTop.ClearBoard(); }
 }

@@ -4,8 +4,8 @@ public class CameraFreeRotation : MonoBehaviour {
     [SerializeField] private GameObject target;
 
     private float speed = 5.0f;
-    private float minFOV = 35.0f;
-    private float maxFOV = 100.0f;
+    private float minFOV = 10.0f;
+    private float maxFOV = 40.0f;
     private float sensitivity = 17.0f;
 
     void Update() {
