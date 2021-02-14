@@ -301,6 +301,7 @@ GameObject:
   - component: {fileID: 613388023}
   - component: {fileID: 613388022}
   - component: {fileID: 613388026}
+  - component: {fileID: 613388027}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -401,6 +402,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tableTop: {fileID: 1199807921}
   avatarSpotlight: {fileID: 1450696833}
+--- !u!114 &613388027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613388021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f447aa181fe5940e8a8bb5bbbb0b75ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,8 +487,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 7.564175e+28, y: 7.8680306e+31, z: 1.8393144e+25,
-    w: 5.733417e-39}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
