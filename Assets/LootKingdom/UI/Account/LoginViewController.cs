@@ -14,7 +14,7 @@ public class LoginViewController : View {
         signupButton.onClick.AddListener(() => { navigationView.Push(Factory.CreateView<SignupViewController>()); });
     }
 
-    private void Login() {
+    // private void Login() {
         
-    }
+    // }
 }

@@ -73,7 +73,7 @@ public class MainViewController : View, ITimerDelegate {
         TableTop.SetBoard(boardView);
 
         gold.text = CurrencyManager.Instance.gold.ToString();
-        diamond.text = CurrencyManager.Instance.diamond.ToString();
+        diamond.text = CurrencyManager.Instance.diamonds.ToString();
         roll.text = CurrencyManager.Instance.numRolls.ToString();
 
         menuButton.onClick.AddListener(() => { menuOpen = !menuOpen; });

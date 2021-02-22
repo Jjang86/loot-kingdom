@@ -7,4 +7,7 @@ public class User {
     public string first_name;
     public string last_name;
     public string user_name;
+    public int gold;
+    public int diamonds;
+    public int experience;
 }

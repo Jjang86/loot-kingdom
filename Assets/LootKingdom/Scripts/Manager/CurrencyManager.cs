@@ -8,6 +8,7 @@ public interface ITimerDelegate {
 }
 
 public class CurrencyManager : Singleton<CurrencyManager> {
+    public const int onLandExperience = 10;
     public const int onLandGold = 20;
     public const int diamondAmountOnGo = 15;
     private const float TIME_TO_GET_DICE_ROLL = 5.0f;
@@ -19,7 +20,7 @@ public class CurrencyManager : Singleton<CurrencyManager> {
 
     public ITimerDelegate timerDelegate;
 
-    private int _gold = 1000;
+    private int _gold = 0;
     public int gold {
         get => _gold;
         set {
@@ -28,11 +29,11 @@ public class CurrencyManager : Singleton<CurrencyManager> {
         }
     }
     
-    private int _diamond = 250;
-    public int diamond {
-        get => _diamond;
+    private int _diamonds = 0;
+    public int diamonds {
+        get => _diamonds;
         set {
-            _diamond = value;            
+            _diamonds = value;      
             NotificationCenter.Notify(Notifications.Currency.diamondChanged, value);
         }
     }
@@ -50,6 +51,7 @@ public class CurrencyManager : Singleton<CurrencyManager> {
         get => _goldEndAmount;
         set {
             _goldEndAmount = value;
+            LootKingdomDirector.user.gold = value;
         }
     }
 
@@ -58,6 +60,7 @@ public class CurrencyManager : Singleton<CurrencyManager> {
         get => _diamondEndAmount;
         set {
             _diamondEndAmount = value;
+            LootKingdomDirector.user.diamonds = value;
         }
     }
 
@@ -82,28 +85,28 @@ public class CurrencyManager : Singleton<CurrencyManager> {
             }
         }
 
-        if (diamond < diamondEndAmount) {
+        if (diamonds < diamondEndAmount) {
             timer += Time.deltaTime;
 
             if (timer >= delayAmount) {
                 timer = 0f;
-                diamond++;
+                diamonds++;
             }
         }
 
-        if (diamond > diamondEndAmount) {
+        if (diamonds > diamondEndAmount) {
             timer += Time.deltaTime;
 
             if (timer >= delayAmount) {
                 timer = 0f;
-                diamond--;
+                diamonds--;
             }
         }
     }
     
     void Start() {
         goldEndAmount = gold;
-        diamondEndAmount = diamond;
+        diamondEndAmount = diamonds;
     }
 
     private void RunDiceTimer() {
