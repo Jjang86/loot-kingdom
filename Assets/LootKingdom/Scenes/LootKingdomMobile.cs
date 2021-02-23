@@ -20,8 +20,6 @@ public class LootKingdomMobile : MonoBehaviour {
         CurrencyManager.Instance.gold = LootKingdomDirector.user.gold;
         CurrencyManager.Instance.diamonds = LootKingdomDirector.user.diamonds;
         ExperienceManager.Instance.SetCurrentLevel();
-        Debug.Log(ExperienceManager.Instance.currentLevel);
-        Debug.Log(ExperienceManager.Instance.SetNextLevelThreshold());
 
         mainNavView = Factory.CreateView<NavigationView>();
         mainNavView.SetRoot(gameObject);

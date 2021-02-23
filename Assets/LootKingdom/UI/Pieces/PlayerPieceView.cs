@@ -6,10 +6,10 @@ using UnityEngine;
 public class PlayerPieceView : View {
     
     private enum Heading {
-        North = 90,
-        East = 180,
-        South = -90,
-        West = 0
+        North = 0,
+        East = 90,
+        South = 180,
+        West = -90
     }
 
     [SerializeField] private RectTransform rect;
